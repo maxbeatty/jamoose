@@ -29,13 +29,15 @@
   },
   "dependencies": {
     "grunt": "~0.4.2",
-    "grunt-contrib-jade": "~0.9.1",
-    "grunt-juice-email": "~0.1.1"
+    "lodash": "~2.4.1",
+    "jade": "~1.0.2",
+    "juice": "~0.4.0"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-clean": "~0.5.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.2"

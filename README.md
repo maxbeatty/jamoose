@@ -3,7 +3,6 @@
 > Preprocessing and Sending HTML Emails in Node.js
 
 
-
 ## Getting Started
 This plugin requires Grunt `~0.4.2`
 
@@ -46,48 +45,40 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
-Type: `String`
-Default value: `',  '`
+#### options.jade
+Type: `Object`
+Default value: `{}`
 
-A string value that is used to do something with whatever.
+Same as [Jade API options](http://jade-lang.com/api/)
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
+_**NB**: `options.jade.filename` defaults to the current file's path
 
-A string value that is used to do something else with whatever else.
+#### options.juice
+Type: `Object`
+Default value: `{ url: 'file://' + process.cwd() + '/' }`
 
-### Usage Examples
+Same as [Juice options](https://github.com/LearnBoost/juice#juicefilepath-options-callback)
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+_Pro Tip: End your `url` with a trailing slash_
 
-```js
-grunt.initConfig({
-  jamoose: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+### Usage Example
 
 ```js
 grunt.initConfig({
   jamoose: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    default_options: {
+      files: [
+        {
+          expand: true,
+          flatten: false,
+          cwd: 'test/fixtures',
+          src: '**/*.jade',
+          dest: 'tmp',
+          ext: '.html'
+        }
+      ]
+    }
+  }
 });
 ```
 
@@ -103,5 +94,3 @@ _(Nothing yet)_
 ## License
 Copyright (c) 2014 Max Beatty
 Licensed under the MIT license.
-
-

@@ -18,8 +18,8 @@ module.exports = function(grunt) {
       lib: {
         src: ['lib/**/*.js']
       },
-      task: {
-        'tasks/*.js'
+      tasks: {
+        src: 'tasks/jamoose.js'
       },
       test: {
         src: ['<%= nodeunit.tests %>']
@@ -49,22 +49,18 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     jamoose: {
       default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-    },
+        files: [
+          {
+            expand: true,
+            flatten: false,
+            cwd: 'test/fixtures',
+            src: '**\/*.jade',
+            dest: 'tmp',
+            ext: '.html'
+          }
+        ]
+      }
+    }
   });
 
   // Actually load this plugin's task(s).

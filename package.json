@@ -1,0 +1,46 @@
+{
+  "name": "jamoose",
+  "description": "Preprocessing and Sending HTML Emails in Node.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/maxbeatty/jamoose",
+  "author": {
+    "name": "Max Beatty",
+    "email": "max@beatty.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxbeatty/jamoose.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxbeatty/jamoose/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/maxbeatty/jamoose/blob/master/LICENSE"
+    }
+  ],
+  "main": "lib/jamoose",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jade": "~0.9.1",
+    "grunt-juice-email": "~0.1.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}

@@ -6,3 +6,12 @@ before_script:
   - npm install -g grunt-cli
 notifications:
   email: false
+deploy:
+  provider: npm
+  email: max@beatty.me
+  api_key:
+    secure: TmCDduHIXI8tohpTuvqFu4NJ4xtFrsttAaBf3tEi7T4V2hqIsJ6b/EuhxXHn+8NjM3SEx/zcnAQDOX7I8W0i/6OU2CdSJ19v5san/v2316hsGK32C+zdFHF9t/DYkQXyFbaGpQpq/tyWcfgoojaJxLn0EAFZzkypDtrfS3D1+aQ=
+  on:
+    tags: true
+    repo: maxbeatty/jamoose
+    branch: master

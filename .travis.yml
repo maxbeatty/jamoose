@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-  - '0.8'
-  - '0.10'
+  - 0.8
+  - 0.10
 before_script:
   - npm install -g grunt-cli
 notifications:
@@ -14,3 +14,4 @@ deploy:
   on:
     tags: true
     repo: maxbeatty/jamoose
+    node: 0.10

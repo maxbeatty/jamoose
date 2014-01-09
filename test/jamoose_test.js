@@ -26,7 +26,7 @@ var jamoose = require('../lib/jamoose.js'),
 exports['jamoose_test'] = {
   setUp: function(done) {
     Mailer = new jamoose({
-      tplPath: '/../tmp/'
+      tplPath: __dirname + '/../tmp/'
     });
     done();
   },

@@ -16,15 +16,52 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('jamoose', 'Preprocesses HTML Email Templates', function() {
     var done = this.async(),
-        jobs = 0;
 
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      jade: {},
-      juice: {
-        url: 'file://' + process.cwd() + '/'
-      }
-    });
+        // Keep track of when we're actually done done
+        jobs = 0,
+
+        // Merge task-specific and/or target-specific options with defaults
+        options = this.options({
+          templateCompiler: 'jade',
+          cssInliner: 'juice',
+          jade: {},
+          juice: {
+            url: 'file://' + process.cwd() + '/'
+          }
+        }),
+
+        templateCompilers = {
+          jade: function(filepath, cb) {
+            try {
+              cb(
+                null,
+                jade.renderFile(
+                  filepath,
+                  _.assign(options.jade, { filename: filepath })
+                )
+              );
+            } catch (err) {
+              cb(err);
+            }
+          }
+
+          // could add others later
+        },
+
+        cssInliners = {
+          juice: function(html, cb) {
+            juice.juiceContent(html, options.juice, cb);
+          }
+
+          // could add others later
+        },
+
+        JamooseException = function(subject, filepath, err) {
+          this.name = 'JamooseException';
+          this.subject = subject;
+          this.filepath = filepath;
+          this.err = err;
+        };
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
@@ -41,32 +78,32 @@ module.exports = function(grunt) {
       })
       .forEach(function(filepath) {
         try {
-          var html, jadeOptions;
-
-          // Compile jade to HTML
-          jadeOptions = _.assign(options.jade, { filename: filepath });
-          html = jade.renderFile(filepath, jadeOptions);
-
-          // Inline CSS to HTML
-          juice.juiceContent(html, options.juice, function (err, inlinedHtml) {
+          templateCompilers[options.templateCompiler](filepath, function(err, html) {
             if (err) {
-              grunt.log.warn('Juice failed to inline ' + filepath + '.');
-              grunt.log.error(err);
-              done(err);
+              throw new JamooseException(options.templateCompiler, filepath, err);
+            } else {
+              cssInliners[options.cssInliner](html, function (err, inlinedHtml) {
+                if (err) {
+                  throw new JamooseException(options.cssInliner, filepath, err);
+                } else {
+                  grunt.file.write(f.dest, inlinedHtml);
+
+                  grunt.log.writeln('File "' + f.dest + '" created.');
+
+                  if (--jobs === 0) { done(); }
+                }
+              });
             }
-
-            // Write the destination file.
-            grunt.file.write(f.dest, inlinedHtml);
-
-            // Print a success message.
-            grunt.log.writeln('File "' + f.dest + '" created.');
-
-            if (--jobs === 0) { done(); }
           });
-        } catch (err) {
-          grunt.log.warn('Jade failed to compile ' + filepath + '.');
-          grunt.log.error(err);
-          done(err);
+        } catch (e) {
+          if (e.name === 'JamooseException') {
+            grunt.log.warn(e.subject + ' failed on ' + e.filepath);
+            grunt.log.error(e.err);
+            done(e.err);
+          } else {
+            console.log(e);
+            done(e);
+          }
         }
       });
     });

@@ -14,4 +14,3 @@ deploy:
   on:
     tags: true
     repo: maxbeatty/jamoose
-    branch: master

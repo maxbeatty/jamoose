@@ -1,0 +1,25 @@
+extends ../ink_basic_template
+
+//- could add custom styles
+
+block body
+  table.row
+    tr
+      td.wrapper.last
+        table.twelve.columns
+          tr
+            td
+              p Hi {{name}},
+              p.lead Welcome! You're a few short steps from completing your account setup. Begin by <a href="{{link}}">creating a password</a>.
+            td.expander
+  table.row.callout
+    tr
+      td.wrapper.last
+        table.six.columns
+          tr
+            td.center
+              center
+                table.button.radius
+                  tr
+                    td
+                      a(href="{{link}}") Create Password

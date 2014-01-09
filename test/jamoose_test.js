@@ -1,6 +1,7 @@
 'use strict';
 
-var jamoose = require('../lib/jamoose.js');
+var jamoose = require('../lib/jamoose.js'),
+    Mailer;
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -22,15 +23,25 @@ var jamoose = require('../lib/jamoose.js');
     test.ifError(value)
 */
 
-exports['awesome'] = {
+exports['jamoose_test'] = {
   setUp: function(done) {
-    // setup here
+    Mailer = new jamoose({
+      tplPath: '/../tmp/'
+    });
     done();
   },
-  'no args': function(test) {
+  createEmail: function(test) {
     test.expect(1);
-    // tests here
-    test.equal(jamoose.awesome(), 'awesome', 'should be awesome.');
+    var email = Mailer.createEmail({});
+    test.ok(email, 'should get email from provider.');
     test.done();
   },
+  getHtml: function(test) {
+    test.expect(2);
+    Mailer.getHtml('123', { name: 'asdf'}, function(err, html) {
+      test.ifError(err);
+      test.ok(/<h1>asdf<\/h1>/.test(html));
+      test.done();
+    });
+  }
 };

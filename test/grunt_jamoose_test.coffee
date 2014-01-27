@@ -1,9 +1,4 @@
-'use strict';
-
-var jamoose = require('../lib/jamoose.js'),
-    Mailer;
-
-/*
+###
   ======== A Handy Little Nodeunit Reference ========
   https://github.com/caolan/nodeunit
 
@@ -21,27 +16,26 @@ var jamoose = require('../lib/jamoose.js'),
     test.throws(block, [error], [message])
     test.doesNotThrow(block, [error], [message])
     test.ifError(value)
-*/
+###
 
-exports['jamoose_test'] = {
-  setUp: function(done) {
-    Mailer = new jamoose({
-      tplPath: __dirname + '/../tmp/'
-    });
-    done();
-  },
-  createEmail: function(test) {
-    test.expect(1);
-    var email = Mailer.createEmail({});
-    test.ok(email, 'should get email from provider.');
-    test.done();
-  },
-  getHtml: function(test) {
-    test.expect(2);
-    Mailer.getHtml('123', { name: 'asdf'}, function(err, html) {
-      test.ifError(err);
-      test.ok(/<h1>asdf<\/h1>/.test(html));
-      test.done();
-    });
-  }
-};
+grunt = require 'grunt'
+
+exports.jamoose =
+  setUp: (done) ->
+    # setup here if necessary
+    done()
+
+  default_options: (test) ->
+    files = ['123', 'testing']
+
+    test.expect files.length
+
+    files.forEach (f) ->
+      fname = f + '.html'
+      test.equal(
+        grunt.file.read('tmp/' + fname),
+        grunt.file.read('test/expected/' + fname),
+        fname + ' should match'
+      )
+
+    test.done()

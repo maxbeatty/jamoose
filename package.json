@@ -1,7 +1,7 @@
 {
   "name": "jamoose",
   "description": "Preprocessing and Sending HTML Emails in Node.js",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "homepage": "https://github.com/maxbeatty/jamoose",
   "author": {
     "name": "Max Beatty",
@@ -25,7 +25,8 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt coffee || { echo >&2 'Grunt is not installed'; }"
   },
   "dependencies": {
     "grunt": "~0.4.2",
@@ -36,7 +37,9 @@
     "sendgrid": "~1.0.0-rc.1.0"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.4",
+    "coffee-script": "~1.6.3",
+    "grunt-coffeelint": "0.0.8",
+    "grunt-contrib-coffee": "~0.8.2",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-clean": "~0.5.0"

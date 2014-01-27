@@ -15,8 +15,10 @@ npm install jamoose --save
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('jamoose');
+require('jamoose')(grunt);
 ```
+
+_If you can figure out how I can use `loadNpmTasks`, please open a pull request_
 
 You can require it in your application like so:
 

@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-- 0.8
-- 0.1
-before_script:
+- "0.8"
+- "0.10"
+before_install:
 - npm install -g grunt-cli
 notifications:
   email: false
@@ -12,7 +12,6 @@ deploy:
   api_key:
     secure: UEkrizqa+V7jRPVIXaE9rcm50+7ZDG0ekfSb7S4THHdkCHWHU1us1pjZvc6rT8xiMDj8IzrIgVYLg1dfPG6GRsJ53lrMw6f5hXlMasgKutT4iCmf0owVxbWJstQBBLTjdXMNihCLG0Vp5WXfqQ+kMQ1DIhVufX7G31gRoyhlmZQ=
   on:
-    branch: master
     tags: true
     repo: maxbeatty/jamoose
     node: 0.1

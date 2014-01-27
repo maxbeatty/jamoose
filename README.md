@@ -15,7 +15,7 @@ npm install jamoose --save
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-jamoose');
+grunt.loadNpmTasks('jamoose');
 ```
 
 You can require it in your application like so:
@@ -83,7 +83,17 @@ grunt.initConfig({
 ```
 
 ## Using in your application
-_(Coming soon)_
+
+See the [examples](https://github.com/maxbeatty/jamoose/tree/master/examples)
+
+### Sending Email
+
+Currently, jamoose uses [SendGrid](https://github.com/sendgrid/sendgrid-nodejs) to send emails underneath the covers. These environment variables must be set:
+
+- `SENDGRID_USER`
+- `SENDGRID_KEY`
+
+Please submit a pull request to add more service providers.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).

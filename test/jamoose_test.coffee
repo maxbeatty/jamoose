@@ -25,7 +25,7 @@ Mailer = null
 exports['jamoose_test'] =
   setUp: (done) ->
     Mailer = new jamoose
-      tplPath: __dirname + '/../tmp/'
+      tplPath: __dirname + '/../.tmp/'
     done()
 
   createEmail: (test) ->

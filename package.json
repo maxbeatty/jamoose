@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "prepublish": "grunt clean coffee"
+    "prepublish": "grunt coffee"
   },
   "files": [
     "lib/"

@@ -44,7 +44,7 @@ module.exports = (grunt) ->
 
     # Before generating any new files, remove any previously-created files
     clean:
-      tests: ['tmp']
+      tests: ['.tmp']
 
     # Configuration to be run (and then tested)
     jamoose:
@@ -55,13 +55,13 @@ module.exports = (grunt) ->
             flatten: false
             cwd: 'test/fixtures'
             src: '**\/*.jade'
-            dest: 'tmp'
+            dest: '.tmp'
             ext: '.html'
           }
         ]
 
   # Actually load this plugin's task(s)
-  grunt.loadTasks 'src/tasks'
+  require('./src/grunt-jamoose')(grunt)
 
   # These plugins provide necessary tasks
   grunt.loadNpmTasks 'grunt-coffeelint'

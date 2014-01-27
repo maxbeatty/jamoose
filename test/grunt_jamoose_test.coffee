@@ -33,7 +33,7 @@ exports.jamoose =
     files.forEach (f) ->
       fname = f + '.html'
       test.equal(
-        grunt.file.read('tmp/' + fname),
+        grunt.file.read('.tmp/' + fname),
         grunt.file.read('test/expected/' + fname),
         fname + ' should match'
       )

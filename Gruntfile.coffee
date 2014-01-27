@@ -61,7 +61,7 @@ module.exports = (grunt) ->
         ]
 
   # Actually load this plugin's task(s)
-  require('./src/grunt-jamoose')(grunt)
+  require('./src/jamoose')(grunt)
 
   # These plugins provide necessary tasks
   grunt.loadNpmTasks 'grunt-coffeelint'

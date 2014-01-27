@@ -17,6 +17,10 @@ sg = require('sendgrid')(process.env.SENDGRID_USER, process.env.SENDGRID_KEY)
 
 class Mailer
   constructor: (@options) ->
+    # return grunt task if called w/ grunt
+    if options.hasOwnProperty 'registerMultiTask'
+      return require('./grunt-jamoose')(options)
+
     unless @options.hasOwnProperty 'tplPath'
       throw new Error 'must pass "tplPath" in constructor options'
 

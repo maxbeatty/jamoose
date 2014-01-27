@@ -26,8 +26,11 @@
   },
   "scripts": {
     "test": "grunt test",
-    "prepublish": "command -v grunt >/dev/null 2>&1 && grunt coffee || { echo >&2 'Grunt is not installed'; }"
+    "prepublish": "grunt clean coffee"
   },
+  "files": [
+    "lib/"
+  ],
   "dependencies": {
     "grunt": "~0.4.2",
     "lodash": "~2.4.1",

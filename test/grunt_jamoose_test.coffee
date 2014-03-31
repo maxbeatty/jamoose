@@ -20,7 +20,7 @@
 
 grunt = require 'grunt'
 
-exports.jamoose =
+exports.grunt_jamoose_test =
   setUp: (done) ->
     # setup here if necessary
     done()

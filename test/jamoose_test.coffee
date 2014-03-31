@@ -22,25 +22,30 @@ jamoose = require '../src/jamoose'
 
 Mailer = null
 
-exports['jamoose_test'] =
+testTplName = '123'
+testTplData = name: 'asdf'
+
+exports.jamoose_test =
   setUp: (done) ->
     Mailer = new jamoose
       tplPath: __dirname + '/../.tmp/'
+      fromEmail: 'sender@example.org'
+
     done()
 
-  createEmail: (test) ->
-    test.expect(1)
-
-    email = Mailer.createEmail {}
-    test.ok email, 'should get email from provider.'
-
-    test.done()
-
   getHtml: (test) ->
-    test.expect(2)
+    test.expect 2
 
-    Mailer.getHtml '123', { name: 'asdf'}, (err, html) ->
+    Mailer.getHtml testTplName, testTplData, (err, html) ->
       test.ifError err
       test.ok /<h1>asdf<\/h1>/.test(html)
+
+      test.done()
+
+  send: (test) ->
+    test.expect 1
+
+    Mailer.send 'to@example.org', 'Test Sub', testTplName, testTplData, (err) ->
+      test.ifError err
 
       test.done()

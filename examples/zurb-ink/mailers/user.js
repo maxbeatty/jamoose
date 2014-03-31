@@ -1,9 +1,10 @@
-var Mailer = require('../../../lib/jamoose'),
-    userMailer = new Mailer({
-      tplPath: '/../views/mailers/user/'
+var jamoose = require('../../../lib/jamoose'),
+    mailer = new jamoose({
+      tplPath: '/../views/mailers/user/',
+      fromEmail: 'sender@edc.ba'
     });
 
-userMailer.send(
+mailer.send(
   'test@abc.de', // to
   'Welcome!', // subject
   'welcome', // template

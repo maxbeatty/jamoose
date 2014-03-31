@@ -12,25 +12,20 @@ path = require 'path'
 # templateCompilers
 hogan = require 'hogan.js'
 
-# service providers
-sg = require('sendgrid')(process.env.SENDGRID_USER, process.env.SENDGRID_KEY)
-
 class Mailer
-  constructor: (@options) ->
+  constructor: (options) ->
     # return grunt task if called w/ grunt
     if options.hasOwnProperty 'registerMultiTask'
       return require('./grunt-jamoose')(options)
 
-    unless @options.hasOwnProperty 'tplPath'
-      throw new Error 'must pass "tplPath" in constructor options'
+    for prop in ['tplPath', 'fromEmail']
+      unless options.hasOwnProperty prop
+        throw new Error "must have property '#{prop}' in constructor options"
 
-  createEmail: (params) ->
-    Email = sg.Email
-
-    new Email params
+    {@tplPath, @fromName, @fromEmail, @bcc} = options
 
   getHtml: (tplName, data, cb) ->
-    filename = path.resolve @options.tplPath + '/' + tplName + '.html'
+    filename = path.resolve @tplPath + '/' + tplName + '.html'
     fs.readFile filename, 'utf8', (err, contents) ->
       if err
         cb err
@@ -39,18 +34,41 @@ class Mailer
         cb null, template.render(data)
 
   send: (to, subject, tplName, tplData, cb) ->
-    email = @createEmail
-      to: to
-      subject: subject
-
-    @getHtml tplName, tplData, (err, html) ->
+    @getHtml tplName, tplData, (err, html) =>
       if err
         cb err
       else
-        email.setHtml html
+        msg =
+          to: to
+          subject: subject
+          html: html
 
-        sg.send email, cb
+        switch
+          when process.env.SENDGRID_USER # sendgrid
+            msg.bcc = [ @bcc ] if @bcc
+            msg.from = @fromEmail
+            msg.fromname = if @fromName then @fromName else @fromEmail
 
-        # TODO: queuing, retry
+            sg = require('sendgrid')(process.env.SENDGRID_USER, process.env.SENDGRID_KEY)
+            email = new sg.Email msg
+            sg.send email, cb
+
+          when process.env.MANDRILL # mandrill
+            msg.to = [ email: to ]
+            msg.bcc_address = @bcc if @bcc
+            msg.from_email = @fromEmail
+            msg.from_name = if @fromName then @fromName else @fromEmail
+            msg.track_opens = true
+            msg.track_clicks = true
+            msg.auto_text = true
+
+            mandrill = require 'mandrill-api/mandrill'
+            mandrillClient = new mandrill.Mandrill process.env.MANDRILL
+            mandrillClient.send
+              message: msg
+            , (result) -> cb null, result
+            , cb
+
+          else cb null
 
 module.exports = Mailer

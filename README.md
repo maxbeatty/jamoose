@@ -98,6 +98,8 @@ See the [examples](https://github.com/maxbeatty/jamoose/tree/master/examples) fo
 ```jade
 //- welcome.jade
 html
+  head
+    link(rel="stylesheet", href="path/to/email.css")
   body
     table
       tr
@@ -110,6 +112,7 @@ html
 ```
 
 ```sass
+// email.sass
 h1
   font-size: 30px
   color: #333
@@ -121,7 +124,9 @@ h1
 $ grunt sass jamoose
 ```
 
-You now will have an HTML file with Mustache variables still in tact.
+You now will have an HTML file with inlined CSS* and Mustache variables still in tact.
+
+* Thanks to [LearnBoost/juice](https://github.com/LearnBoost/juice)
 
 ```html
 <html>
@@ -129,7 +134,7 @@ You now will have an HTML file with Mustache variables still in tact.
     <table>
       <tr>
         <td>
-          <h1>Welcome {{name}}</h1>
+          <h1 style="font-size:30px;color:#333">Welcome {{name}}</h1>
         </td>
       </tr>
       <tr>

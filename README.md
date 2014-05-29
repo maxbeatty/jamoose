@@ -204,6 +204,7 @@ Tests are written with [nodeunit](https://github.com/caolan/nodeunit) and can be
 
 ## Release History
 
+v2.0.0 - Drop support for Node v0.8
 v1.0.0 - Add Mandrill support
 
 ## License

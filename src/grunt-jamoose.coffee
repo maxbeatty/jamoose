@@ -42,42 +42,40 @@ module.exports = (grunt) ->
 
       # could add others later
 
-    JamooseException = (@subject, @filepath, @err) ->
-      @name = 'JamooseException'
-
-      return
+    JamooseException = (subject, filepath, err) ->
+      grunt.log.warn subject + ' failed on ' + filepath
+      grunt.log.error err
+      done err
 
     # Iterate over all specified file groups.
     @files.forEach (f) ->
-      ++jobs
-
-      f.src.filter( (filepath) ->
+      f.src.forEach (filepath) ->
         # Warn on and remove invalid source files (if nonull was set)
-        unless grunt.file.exists(filepath)
+        unless grunt.file.exists filepath
           grunt.log.warn "Source file '#{filepath}' not found."
-          return false
         else
-          return true
-      ).forEach (filepath) ->
-        try
-          templateCompilers[options.templateCompiler] filepath, (err, html) ->
-            if err
-              throw new JamooseException options.templateCompiler, filepath, err
-            else
-              cssInliners[options.cssInliner] html, (err, inlinedHtml) ->
-                if err
-                  throw new JamooseException options.cssInliner, filepath, err
-                else
-                  grunt.file.write f.dest, inlinedHtml
+          ++jobs
 
-                  grunt.log.writeln "File '#{f.dest}' created."
+          grunt.log.debug 'Processing: ' + filepath
 
-                  done() if --jobs is 0
-        catch e
-          if e.name is 'JamooseException'
-            grunt.log.warn e.subject + ' failed on ' + e.filepath
-            grunt.log.error e.err
-            done e.err
-          else
+          try
+            templateCompilers[options.templateCompiler] filepath, (err, html) ->
+              if err
+                JamooseException options.templateCompiler, filepath, err
+              else
+                grunt.log.debug 'Compiled: ' + filepath
+
+                cssInliners[options.cssInliner] html, (err, inlinedHtml) ->
+                  if err
+                    JamooseException options.cssInliner, filepath, err
+                  else
+                    grunt.log.debug 'Inlined: ' + filepath
+
+                    grunt.file.write f.dest, inlinedHtml
+
+                    grunt.log.writeln "File '#{f.dest}' created."
+
+                    done() if --jobs is 0
+          catch e
             grunt.log.error e
             done e

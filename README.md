@@ -198,8 +198,13 @@ Set the environment variables for the provider of your choice and it will be use
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
+### Testing
+
+Tests are written with [nodeunit](https://github.com/caolan/nodeunit) and can be run with `npm test`
+
 ## Release History
 
+v2.0.0 - Drop support for Node v0.8
 v1.0.0 - Add Mandrill support
 
 ## License

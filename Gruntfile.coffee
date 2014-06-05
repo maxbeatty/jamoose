@@ -54,7 +54,7 @@ module.exports = (grunt) ->
             expand: true
             flatten: false
             cwd: 'test/fixtures'
-            src: '**\/*.jade'
+            src: '**/*.jade'
             dest: '.tmp'
             ext: '.html'
           }

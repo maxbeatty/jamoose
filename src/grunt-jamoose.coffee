@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
 ###
 
-_ = require 'lodash'
+step = require 'step'
 jade = require 'jade'
 juice = require 'juice'
 
@@ -14,8 +14,6 @@ module.exports = (grunt) ->
 
   grunt.registerMultiTask 'jamoose', 'Preprocesses HTML Email Templates', ->
     done = @async()
-
-    jobs = 0 # Keep track of when we're actually done done
 
     # Merge task-specific and/or target-specific options with defaults
     options = @options
@@ -28,9 +26,8 @@ module.exports = (grunt) ->
     templateCompilers =
       jade: (filepath, cb) ->
         try
-          cb null,
-            jade.renderFile filepath,
-              _.assign options.jade, filename: filepath
+          options.jade.filename = filepath
+          cb null, jade.renderFile(filepath, options.jade)
         catch err
           cb err
 
@@ -47,35 +44,44 @@ module.exports = (grunt) ->
       grunt.log.error err
       done err
 
-    # Iterate over all specified file groups.
-    @files.forEach (f) ->
-      f.src.forEach (filepath) ->
-        # Warn on and remove invalid source files (if nonull was set)
-        unless grunt.file.exists filepath
-          grunt.log.warn "Source file '#{filepath}' not found."
-        else
-          ++jobs
+    self = @
 
-          grunt.log.debug 'Processing: ' + filepath
+    step(
+      ->
+        group = @group()
 
-          try
-            templateCompilers[options.templateCompiler] filepath, (err, html) ->
-              if err
-                JamooseException options.templateCompiler, filepath, err
-              else
-                grunt.log.debug 'Compiled: ' + filepath
+        # Iterate over all specified file groups.
+        self.files.forEach (f) ->
+          f.src.forEach (filepath) ->
+            # Warn on and remove invalid source files (if nonull was set)
+            unless grunt.file.exists filepath
+              grunt.log.warn "Source file '#{filepath}' not found."
+            else
+              cb = group()
+              grunt.log.debug 'Processing: ' + filepath
 
-                cssInliners[options.cssInliner] html, (err, inlinedHtml) ->
+              try
+                templateCompilers[options.templateCompiler] filepath, (err, html) ->
                   if err
-                    JamooseException options.cssInliner, filepath, err
+                    JamooseException options.templateCompiler, filepath, err
                   else
-                    grunt.log.debug 'Inlined: ' + filepath
+                    grunt.log.debug 'Compiled: ' + filepath
 
-                    grunt.file.write f.dest, inlinedHtml
+                    cssInliners[options.cssInliner] html, (err, inlinedHtml) ->
+                      if err
+                        JamooseException options.cssInliner, filepath, err
+                      else
+                        grunt.log.debug 'Inlined: ' + filepath
 
-                    grunt.log.writeln "File '#{f.dest}' created."
+                        grunt.file.write f.dest, inlinedHtml
 
-                    done() if --jobs is 0
-          catch e
-            grunt.log.error e
-            done e
+                        grunt.log.writeln "File '#{f.dest}' created."
+
+                        cb()
+              catch e
+                grunt.log.error e
+                done err
+
+        return
+      done
+    )

@@ -26,11 +26,7 @@ exports.grunt_jamoose_test =
     done()
 
   default_options: (test) ->
-    files = ['123', 'testing']
-
-    test.expect files.length
-
-    files.forEach (f) ->
+    ['123', 'testing'].forEach (f) ->
       fname = f + '.html'
       test.equal(
         grunt.file.read('.tmp/' + fname),

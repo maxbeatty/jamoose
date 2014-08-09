@@ -195,6 +195,10 @@ Set the environment variables for the provider of your choice and it will be use
 
 - `MANDRILL` - API key (create one from [your settings page](https://mandrillapp.com/settings/index))
 
+### Using in development
+
+If `process.env.NODE_ENV` is set to `development`, HTML files will be written to a temporary file when you `send`. The path is `console.log` for you to inspect. If you'd like to actually send an email during development or locally, set `process.env.NODE_ENV` to something besides `development`.
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 

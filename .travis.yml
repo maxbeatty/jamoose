@@ -12,7 +12,6 @@ deploy:
     secure: UEkrizqa+V7jRPVIXaE9rcm50+7ZDG0ekfSb7S4THHdkCHWHU1us1pjZvc6rT8xiMDj8IzrIgVYLg1dfPG6GRsJ53lrMw6f5hXlMasgKutT4iCmf0owVxbWJstQBBLTjdXMNihCLG0Vp5WXfqQ+kMQ1DIhVufX7G31gRoyhlmZQ=
   skip_cleanup: true
   on:
-    branch: master
     tags: true
     repo: maxbeatty/jamoose
     node: "0.10"

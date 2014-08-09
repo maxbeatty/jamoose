@@ -44,6 +44,19 @@ class Mailer
           html: html
 
         switch
+          when process.env.NODE_ENV is 'development'
+            tmp = require 'tmp'
+            
+            tmp.file { keep: true, postfix: '.html' }, (err, path, fd) ->
+              return cb err if err
+
+              fs.writeFile path, html, (err) ->
+                if err
+                  cb err
+                else
+                  console.log '[jamoose] wrote email to file: ' + path
+                  cb null
+
           when process.env.SENDGRID_USER # sendgrid
             msg.bcc = [ @bcc ] if @bcc
             msg.from = @fromEmail

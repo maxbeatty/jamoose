@@ -49,3 +49,16 @@ exports.jamoose_test =
       test.ifError err
 
       test.done()
+
+  sendDevelopment: (test) ->
+    test.expect 1
+
+    tmpNE = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+
+    Mailer.send 'to@example.org', 'Test Development', testTplName, testTplData, (err) ->
+      process.env.NODE_ENV = tmpNE
+      
+      test.ifError err
+
+      test.done()

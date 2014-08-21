@@ -30,7 +30,10 @@ class Mailer
       if err
         cb err
       else
-        template = hogan.compile contents
+        try
+          template = hogan.compile contents
+        catch err
+          return cb err
         cb null, template.render(data)
 
   send: (to, subject, tplName, tplData, cb) ->
@@ -46,7 +49,7 @@ class Mailer
         switch
           when process.env.NODE_ENV is 'development'
             tmp = require 'tmp'
-            
+
             tmp.file { keep: true, postfix: '.html' }, (err, path, fd) ->
               return cb err if err
 

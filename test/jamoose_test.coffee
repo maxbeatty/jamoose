@@ -24,6 +24,11 @@ Mailer = null
 
 testTplName = '123'
 testTplData = name: 'asdf'
+testBadTplName = 'bad_template'
+testBadTplData =
+  node:
+    name: 'bad'
+
 
 exports.jamoose_test =
   setUp: (done) ->
@@ -39,6 +44,14 @@ exports.jamoose_test =
     Mailer.getHtml testTplName, testTplData, (err, html) ->
       test.ifError err
       test.ok /<h1>asdf<\/h1>/.test(html)
+
+      test.done()
+
+  getHtmlWithBadTemplate: (test) ->
+    test.expect 1
+
+    Mailer.getHtml testBadTplName, testBadTplData, (err, html) ->
+      test.ok err?
 
       test.done()
 
@@ -58,7 +71,7 @@ exports.jamoose_test =
 
     Mailer.send 'to@example.org', 'Test Development', testTplName, testTplData, (err) ->
       process.env.NODE_ENV = tmpNE
-      
+
       test.ifError err
 
       test.done()

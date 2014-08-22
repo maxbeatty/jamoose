@@ -13,5 +13,6 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+    all_branches: true
     repo: maxbeatty/jamoose
     node: "0.10"
